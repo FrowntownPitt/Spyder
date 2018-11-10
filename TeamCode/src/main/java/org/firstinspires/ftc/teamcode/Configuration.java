@@ -24,8 +24,8 @@ public class Configuration {
     public static class Vuforia {
         public static final String VUFORIA_LICENSE = "AQmD/ND/////AAAAGc1t61ZITEyugHepydtgm1Y0FfRGgyMpDqFmHFYfkIEnJgLFu1dgPisVPl3D2PQUpn2kv58WXXGCUnryLHfbeJFapwBfVMkqlfPCbPJRXn0A1uuf4x2KiUb+DtiKqNX0flLtxt7L9azPhx6An2hOA6atHgofp68cII1ZD8vNukmQiquv3vEjX7k2olvtIKosBGYTY2ti/0Sa6Gii3NM4JPmQbusiJjz55V+m9R85+gsTwQHxoFq56QB9dtrV2gf+uhndrHhPEmVgqvvsGwrBjsYTmjlVeekAed63QER4mZMACMt7wXl4DqwxaWl/Jg0lF0rtTyNK2lMEGtBoKuewMMHe4NSkqWi3TJ2B8n7R6ghM";
 
-        static final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // eg: Camera is 110 mm in front of robot center
-        static final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // eg: Camera is 200 mm above ground
+        static final int CAMERA_FORWARD_DISPLACEMENT  = 0;   // eg: Camera is 110 mm in front of robot center
+        static final int CAMERA_VERTICAL_DISPLACEMENT = 0;   // eg: Camera is 200 mm above ground
         static final int CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
         static final float MM_PER_INCH = 25.4f;
