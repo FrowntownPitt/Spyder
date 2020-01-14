@@ -1,23 +1,31 @@
 # Spyder Controls Platform
 
 ## Intro
-This is a fork of the [FIRST Tech Challenge control system](https://github.com/ftctechnh/ftc_app).  The intent of this project is to construct a compact demonstration of the autonomous and localization features offered by the platform.  
+This is a fork of the [FIRST Tech Challenge control system](https://github.com/ftctechnh/ftc_app).  The intent of this project is to construct a compact demonstration of the autonomous and localization features offered by the platform.
 
 For observers not familiar with the given FTC SDK, all code written for this demo lives in [TeamCode/src/main/java/org/firstinspires/ftc/teamcode](TeamCode/src/main/java/org/firstinspires/ftc/teamcode).
 
 ### Robot Configuration
-The Spyder plaform consists of 4 REV Core Hex motors placed in a "plus" configuration, each with a single REV 4-inch omni wheel.  There is a ZTE Speed phone mounted in Portrait mode facing forward, with a REV Expansion Hub placed on the left side, oriented with the USB port facing up and the IO ports facing rightward (knowing this is important for understanding the orientation of the internal IMU). 
+The Spyder plaform consists of 4 REV Core Hex motors placed in a "plus" configuration, each with a single REV 4-inch omni wheel.  There is a ZTE Speed phone mounted in Portrait mode facing forward, with a REV Expansion Hub placed on the left side, oriented with the USB port facing up and the IO ports facing rightward (knowing this is important for understanding the orientation of the internal IMU).
 
 [RobotConfiguration.java](TeamCode/src/main/java/org/firstinspires/ftc/teamcode/RobotConfiguration.java) can be used to handle setting up the motors and the IMU, along with driving the robot.  A very easy to understand example usage can be found in [Holonomic.java](TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Holonomic.java)
 
 ### Vuforia Configuration
-FIRST uses the [Vuforia Augmented Reality](https://www.vuforia.com/) platform to allow teams to find navigation targets to localize their robots to the field. The example code given by FIRST is very hard to read because there is so much configuration required to get it set up.  I broke it down and stripped out as much as possible into [Configuration.java](TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Configuration.java) under the Vuforia internal class.  This handles initializing and "placing" the navigation targets, along with setting up some Vuforia internals.  Unfortunately, not everything could be stripped out into this configuration because of the things Vuforia needs to be initialized internally.  Also, localization happens by polling each target, which caused any such refactoring to make the configuration hard to understand instead.  
+FIRST uses the [Vuforia Augmented Reality](https://www.vuforia.com/) platform to allow teams to find navigation targets to localize their robots to the field. The example code given by FIRST is very hard to read because there is so much configuration required to get it set up.  I broke it down and stripped out as much as possible into [Configuration.java](TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Configuration.java) under the Vuforia internal class.  This handles initializing and "placing" the navigation targets, along with setting up some Vuforia internals.  Unfortunately, not everything could be stripped out into this configuration because of the things Vuforia needs to be initialized internally.  Also, localization happens by polling each target, which caused any such refactoring to make the configuration hard to understand instead.
 
 [HolonomicVuforiaNav.java](TeamCode/src/main/java/org/firstinspires/ftc/teamcode/HolonomicVuforiaNav.java) uses the Vuforia Configuration in a very basic way - Allow the user to drive and display where on the field the Vuforia system believes you are based on image recognition.
-       
+
 ---
 
 ## Old FIRST Readme portion (stripped down)
+
+## NOTICE
+
+This repository contains v5.0 of the FTC SDK.  No further versions will pushed to https://github.com/ftctechnh/ftc_app.
+
+v5.0 has also been posted to https://github.com/FIRST-Tech-Challenge/SkyStone where all further releases will be posted for the 2019/20 season.
+
+Why are we doing this?  Git/GitHub is not designed to store large binary blobs.  As such the ftc_app repository has grown to over 1GB.  Not only does this violate GitHub's usage policies, but puts an undue burden on users of the repository when they download it.  For the foreseeable future a season specific version of the repository will be hosted at the url above.  Different approaches to prevent the size problem from recurring are being evaluated by the FTC Technology Team.  We realize that this creates a problem with teams that have maintained a history of software within the ftc_app workspace.  We appreciate your patience and understanding as work to migrate to a permanent solution.
 
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
