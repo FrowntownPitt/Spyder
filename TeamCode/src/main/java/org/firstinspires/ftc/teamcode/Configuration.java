@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.support.annotation.NonNull;
-
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -43,7 +41,6 @@ public class Configuration {
             VUFORIA_PARAMETERS = createVuforiaParameters(this.cameraMonitorViewId);
         }
 
-        @NonNull
         private VuforiaLocalizer.Parameters createVuforiaParameters(int cameraMonitorViewId) {
             VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -67,7 +64,6 @@ public class Configuration {
                 this.NAVIGATION_TARGETS = navigationTargets;
             }
 
-            @NonNull
             public  List<VuforiaTrackable> setupNavigationTargets(){
                 VuforiaTrackable blueRover = NAVIGATION_TARGETS.get(0);
                 blueRover.setName("Blue-Rover");
