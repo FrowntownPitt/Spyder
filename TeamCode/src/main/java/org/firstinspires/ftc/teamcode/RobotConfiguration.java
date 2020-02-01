@@ -46,7 +46,20 @@ public class RobotConfiguration {
         motorLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFront.setDirection(DcMotor.Direction.REVERSE);
 
+        resetDriveEncoders();
+
         collector = new Collector(hardwareMap);
+    }
+
+    private void resetDriveEncoders(){
+        motorFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void updateIMUAngles() {
@@ -66,6 +79,10 @@ public class RobotConfiguration {
 
     public Orientation getOrientation() {
         return IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    }
+
+    public double getHeading() {
+        return imu_angles.firstAngle;
     }
 
     public void resetIMUOffset() {
@@ -89,7 +106,7 @@ public class RobotConfiguration {
     public void setPowerFromJoysticks(double x, double y, double r) {
         double power = Math.hypot(x, y);
 
-        double targetAngle = Math.atan2(y, x) - (Math.toRadians(imu_angles.firstAngle - offsetZ));
+        double targetAngle = Math.atan2(y, x) - (Math.toRadians(getHeading() - offsetZ));
 
         setPowerFromAngle(targetAngle, power, r);
     }
@@ -100,6 +117,17 @@ public class RobotConfiguration {
         telemetry.addData("Heading ", imu_angles.firstAngle - offsetZ);
         telemetry.addData("Roll    ", imu_angles.secondAngle - offsetY);
         telemetry.addData("Pitch   ", imu_angles.thirdAngle - offsetX);
+    }
+
+    public int[] getDriveEncoderValues(){
+        int[] encoders = new int[4];
+
+        encoders[0] = motorFront.getCurrentPosition();
+        encoders[1] = motorRight.getCurrentPosition();
+        encoders[2] = motorRear.getCurrentPosition();
+        encoders[3] = motorLeft.getCurrentPosition();
+
+        return encoders;
     }
 
     public void moveCollectorFromGamepad(Gamepad gamepad) {
