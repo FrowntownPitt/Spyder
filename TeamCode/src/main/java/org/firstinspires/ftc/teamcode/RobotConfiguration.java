@@ -29,11 +29,14 @@ public class RobotConfiguration {
     private DcMotor motorLeft;
     private DcMotor motorRight;
 
+    private DcMotor.RunMode defaultDriveRunMode = DcMotor.RunMode.RUN_WITHOUT_ENCODER;
+
     private float offsetZ = 0;
     private float offsetY = 0;
     private float offsetX = 0;
 
     private Orientation imu_angles;
+    private RobotLocalizer localizer;
 
     public RobotConfiguration(HardwareMap hardwareMap) {
         IMU = hardwareMap.get(BNO055IMU.class, "imu");
@@ -51,15 +54,24 @@ public class RobotConfiguration {
         collector = new Collector(hardwareMap);
     }
 
+    public void initLocalizer(){
+        localizer = new RobotLocalizer(motorFront, motorRight, motorRear, motorLeft, this);
+        resetDriveEncoders();
+    }
+
+    public void updateLocalizer() {
+        localizer.updateLocation();
+    }
+
     private void resetDriveEncoders(){
         motorFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorFront.setMode(defaultDriveRunMode);
         motorRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRear.setMode(defaultDriveRunMode);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLeft.setMode(defaultDriveRunMode);
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(defaultDriveRunMode);
     }
 
     public void updateIMUAngles() {
@@ -82,7 +94,7 @@ public class RobotConfiguration {
     }
 
     public double getHeading() {
-        return imu_angles.firstAngle;
+        return imu_angles.firstAngle - offsetZ;
     }
 
     public void resetIMUOffset() {
@@ -111,14 +123,6 @@ public class RobotConfiguration {
         setPowerFromAngle(targetAngle, power, r);
     }
 
-    public void displayIMUData(Telemetry telemetry) {
-        updateIMUAngles();
-
-        telemetry.addData("Heading ", imu_angles.firstAngle - offsetZ);
-        telemetry.addData("Roll    ", imu_angles.secondAngle - offsetY);
-        telemetry.addData("Pitch   ", imu_angles.thirdAngle - offsetX);
-    }
-
     public int[] getDriveEncoderValues(){
         int[] encoders = new int[4];
 
@@ -142,6 +146,25 @@ public class RobotConfiguration {
         } else if (gamepad.left_trigger > 0) {
             collector.grab(CollectorMovement.GRAB);
         }
+    }
+
+    public RobotLocalizer.Location getFieldLocation() {
+        return localizer.getFieldLocation();
+    }
+
+    public void displayIMUData(Telemetry telemetry) {
+        updateIMUAngles();
+
+        telemetry.addData("Heading ", getHeading());
+        telemetry.addData("Roll    ", imu_angles.secondAngle - offsetY);
+        telemetry.addData("Pitch   ", imu_angles.thirdAngle - offsetX);
+    }
+
+    public void displayFieldLocation(Telemetry telemetry) {
+        RobotLocalizer.Location fieldLocation = getFieldLocation();
+        telemetry.addData("Field Location (X, Y, Heading)",
+                "(%f, %f, %f)",
+                fieldLocation.getX(), fieldLocation.getY(), fieldLocation.getHeading());
     }
 
     public class Collector {
